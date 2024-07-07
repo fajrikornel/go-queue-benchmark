@@ -25,15 +25,29 @@ func NewListQueue[T any]() *ListQueue[T] {
 func (q *ListQueue[T]) String() string {
 	values := []string{}
 	cur := q.front
+
+	if cur == nil {
+		return ""
+	}
+
 	for cur != nil {
 		values = append(values, fmt.Sprintf("%v", cur.val))
+		cur = cur.next
 	}
 
 	return strings.Join(values, ",")
 }
 
 func (q *ListQueue[T]) Enqueue(val T) {
+	newNode := &ListNode[T]{
+		val:  val,
+		next: nil,
+	}
 
+	if q.back == nil && q.front == nil {
+		q.front = newNode
+		q.back = newNode
+	}
 }
 
 func (q *ListQueue[T]) Dequeue() T {
