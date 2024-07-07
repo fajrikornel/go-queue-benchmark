@@ -52,7 +52,9 @@ func (q *Queue[T]) Dequeue() T {
 		panic("Queue is empty!")
 	}
 
-	return q.queue[0]
+	val := q.queue[q.back]
+	q.back = q.getNextIndex(q.back)
+	return val
 }
 
 func (q *Queue[T]) getNextIndex(i int) int {

@@ -104,6 +104,26 @@ func TestDequeue(t *testing.T) {
 				queue.Dequeue()
 			},
 		},
+		{
+			"test_dequeue_on_nonempty_queue", func(t *testing.T) {
+				queue := New[int](2)
+				queue.front = 0
+				queue.back = 0
+				queue.queue[0] = 123
+
+				actualValue := queue.Dequeue()
+
+				if queue.front != 0 {
+					t.Fatalf("Queue front not 0")
+				}
+				if queue.back != 1 {
+					t.Fatalf("Queue back not 1")
+				}
+				if actualValue != 123 {
+					t.Fatalf("Dequeue value not expected: %v", actualValue)
+				}
+			},
+		},
 	}
 
 	for _, tc := range testCases {
