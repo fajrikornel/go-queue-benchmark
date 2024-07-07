@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	q "example.com/go-dsa/internal/queue"
+	q "github.com/fajrikornel/go-queue-benchmark/internal/queue"
 )
 
 func BenchmarkArrayQueue_Enqueue(b *testing.B) {
