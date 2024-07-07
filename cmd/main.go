@@ -1,17 +1,5 @@
 package main
 
-import (
-	"fmt"
-
-	q "example.com/go-dsa/internal/queue"
-)
-
 func main() {
-	var queue q.Queue[int]
-
-	queue = q.NewArrayQueue[int](5)
-	fmt.Printf("%v\n", queue)
-
-	queue = q.NewListQueue[int]()
-	fmt.Printf("%v\n", queue)
+	panic("Not supposed to be called!")
 }
