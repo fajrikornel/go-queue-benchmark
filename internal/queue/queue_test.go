@@ -65,6 +65,49 @@ func TestEnqueue(t *testing.T) {
 				}
 			},
 		},
+		{
+			"test_enqueue_on_edge_of_array", func(t *testing.T) {
+				queue := New[int](2)
+				queue.front = 1
+				queue.back = 1
+				queue.queue[1] = 321
+
+				val := 123
+				queue.Enqueue(val)
+
+				if queue.front != 0 {
+					t.Fatalf("Queue front not 0")
+				}
+				if queue.back != 1 {
+					t.Fatalf("Queue back not 1")
+				}
+				if !reflect.DeepEqual(queue.queue, []int{123, 321}) {
+					t.Fatalf("Queue value not expected: %v", queue.queue)
+				}
+			},
+		},
+		{
+			"test_enqueue_on_enqueuable_queue_when_back_is_at_edge_of_array", func(t *testing.T) {
+				queue := New[int](3)
+				queue.front = 0
+				queue.back = 2
+				queue.queue[0] = 321
+				queue.queue[2] = 321
+
+				val := 123
+				queue.Enqueue(val)
+
+				if queue.front != 1 {
+					t.Fatalf("Queue front not 1")
+				}
+				if queue.back != 2 {
+					t.Fatalf("Queue back not 2")
+				}
+				if !reflect.DeepEqual(queue.queue, []int{321, 123, 321}) {
+					t.Fatalf("Queue value not expected: %v", queue.queue)
+				}
+			},
+		},
 	}
 
 	for _, tc := range testCases {
@@ -122,6 +165,41 @@ func TestDequeue(t *testing.T) {
 				if actualValue != 123 {
 					t.Fatalf("Dequeue value not expected: %v", actualValue)
 				}
+			},
+		},
+		{
+			"test_dequeue_on_nonempty_queue_on_edge_of_array", func(t *testing.T) {
+				queue := New[int](2)
+				queue.front = 1
+				queue.back = 1
+				queue.queue[1] = 123
+
+				actualValue := queue.Dequeue()
+
+				if queue.front != 1 {
+					t.Fatalf("Queue front not 1")
+				}
+				if queue.back != 0 {
+					t.Fatalf("Queue back not 0")
+				}
+				if actualValue != 123 {
+					t.Fatalf("Dequeue value not expected: %v", actualValue)
+				}
+			},
+		},
+		{
+			"test_dequeue_on_empty_queue_after_dequeuing_edge_of_array", func(t *testing.T) {
+				defer func() {
+					if r := recover(); r == nil {
+						t.Fatalf("Did not panic!!")
+					}
+				}()
+
+				queue := New[int](2)
+				queue.front = 1
+				queue.back = 0
+
+				queue.Dequeue()
 			},
 		},
 	}
