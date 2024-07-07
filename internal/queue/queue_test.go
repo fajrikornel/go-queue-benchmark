@@ -27,6 +27,22 @@ func TestEnqueue(t *testing.T) {
 				}
 			},
 		},
+		{
+			"test_enqueue_on_full_queue", func(t *testing.T) {
+				defer func() {
+					if r := recover(); r == nil {
+						t.Fatal("Did not panic!!")
+					}
+				}()
+
+				queue := New[int](1)
+				queue.front = 0
+				queue.back = 0
+
+				val := 123
+				queue.Enqueue(val)
+			},
+		},
 	}
 
 	for _, tc := range testCases {
