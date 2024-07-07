@@ -71,3 +71,42 @@ func TestEnqueue(t *testing.T) {
 		t.Run(tc.name, tc.testCase)
 	}
 }
+func TestDequeue(t *testing.T) {
+	testCases := []struct {
+		name     string
+		testCase func(*testing.T)
+	}{
+		{
+			"test_dequeue_on_empty_queue_never_enqueued", func(t *testing.T) {
+				defer func() {
+					if r := recover(); r == nil {
+						t.Fatalf("Did not panic!!")
+					}
+				}()
+
+				queue := New[int](1)
+
+				queue.Dequeue()
+			},
+		},
+		{
+			"test_dequeue_on_empty_queue", func(t *testing.T) {
+				defer func() {
+					if r := recover(); r == nil {
+						t.Fatalf("Did not panic!!")
+					}
+				}()
+
+				queue := New[int](2)
+				queue.front = 0
+				queue.back = 1
+
+				queue.Dequeue()
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, tc.testCase)
+	}
+}

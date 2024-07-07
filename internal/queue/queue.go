@@ -47,6 +47,14 @@ func (q *Queue[T]) Enqueue(val T) {
 	q.queue[next] = val
 }
 
+func (q *Queue[T]) Dequeue() T {
+	if q.front < 0 || q.back > q.front {
+		panic("Queue is empty!")
+	}
+
+	return q.queue[0]
+}
+
 func (q *Queue[T]) getNextIndex(i int) int {
 	if i+1 > q.capacity-1 {
 		return 0
