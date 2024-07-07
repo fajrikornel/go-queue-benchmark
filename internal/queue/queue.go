@@ -42,6 +42,9 @@ func (q *Queue[T]) Enqueue(val T) {
 	if next == q.back {
 		panic("Queue is full!")
 	}
+
+	q.front = next
+	q.queue[next] = val
 }
 
 func (q *Queue[T]) getNextIndex(i int) int {

@@ -1,6 +1,7 @@
 package queue
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -41,6 +42,27 @@ func TestEnqueue(t *testing.T) {
 
 				val := 123
 				queue.Enqueue(val)
+			},
+		},
+		{
+			"test_enqueue_on_non_empty_queue", func(t *testing.T) {
+				queue := New[int](2)
+				queue.front = 0
+				queue.back = 0
+				queue.queue[0] = 321
+
+				val := 123
+				queue.Enqueue(val)
+
+				if queue.front != 1 {
+					t.Fatalf("Queue front not 1")
+				}
+				if queue.back != 0 {
+					t.Fatalf("Queue back not 0")
+				}
+				if !reflect.DeepEqual(queue.queue, []int{321, 123}) {
+					t.Fatalf("Queue value not expected: %v", queue.queue)
+				}
 			},
 		},
 	}
