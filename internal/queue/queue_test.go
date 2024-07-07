@@ -179,3 +179,104 @@ func TestDequeue(t *testing.T) {
 		t.Run(tc.name, tc.testCase)
 	}
 }
+
+func TestIntegration(t *testing.T) {
+	testCases := []struct {
+		name     string
+		testCase func(*testing.T)
+	}{
+		{
+			"test_queue_size_1", func(t *testing.T) {
+				queue := New[int](1)
+
+				queue.Enqueue(123)
+				if !reflect.DeepEqual(queue.queue, []int{123}) {
+					t.Fatalf("Not expected!")
+				}
+
+				func() {
+					defer func() {
+						if r := recover(); r == nil {
+							t.Fatalf("Did not panic!!")
+						}
+					}()
+
+					queue.Enqueue(321)
+				}()
+
+				val := queue.Dequeue()
+				if val != 123 {
+					t.Fatalf("Not expected!")
+				}
+
+				func() {
+					defer func() {
+						if r := recover(); r == nil {
+							t.Fatalf("Did not panic!!")
+						}
+					}()
+
+					queue.Dequeue()
+				}()
+
+				queue.Enqueue(456)
+				if !reflect.DeepEqual(queue.queue, []int{456}) {
+					t.Fatalf("Not expected!")
+				}
+
+				val = queue.Dequeue()
+				if val != 456 {
+					t.Fatalf("Not expected!")
+				}
+			},
+		},
+		{
+			"test_queue_size_3", func(t *testing.T) {
+				queue := New[int](3)
+
+				queue.Enqueue(123)
+				queue.Enqueue(456)
+				queue.Enqueue(789)
+				if !reflect.DeepEqual(queue.queue, []int{123, 456, 789}) {
+					t.Fatalf("Not expected!")
+				}
+
+				func() {
+					defer func() {
+						if r := recover(); r == nil {
+							t.Fatalf("Did not panic!!")
+						}
+					}()
+
+					queue.Enqueue(321)
+				}()
+
+				val := queue.Dequeue()
+				if val != 123 {
+					t.Fatalf("Not expected!")
+				}
+
+				queue.Enqueue(321)
+
+				val = queue.Dequeue()
+				if val != 456 {
+					t.Fatalf("Not expected!")
+				}
+
+				val = queue.Dequeue()
+				if val != 789 {
+					t.Fatalf("Not expected!")
+				}
+
+				val = queue.Dequeue()
+				if val != 321 {
+					t.Fatalf("Not expected!")
+				}
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, tc.testCase)
+	}
+}
