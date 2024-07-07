@@ -19,6 +19,18 @@ func TestListQueueEnqueue(t *testing.T) {
 				}
 			},
 		},
+		{
+			"test_enqueue_on_nonempty_queue", func(t *testing.T) {
+				queue := newListQueueFromValues(123, 456)
+
+				queue.Enqueue(789)
+
+				expectedQueue := newListQueueFromValues(123, 456, 789)
+				if !isQueueEqual(expectedQueue, queue) {
+					t.Fatalf("Queue %v not equal to expected %v", queue, expectedQueue)
+				}
+			},
+		},
 	}
 
 	for _, tc := range testCases {

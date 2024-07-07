@@ -26,10 +26,6 @@ func (q *ListQueue[T]) String() string {
 	values := []string{}
 	cur := q.front
 
-	if cur == nil {
-		return ""
-	}
-
 	for cur != nil {
 		values = append(values, fmt.Sprintf("%v", cur.val))
 		cur = cur.next
@@ -47,7 +43,11 @@ func (q *ListQueue[T]) Enqueue(val T) {
 	if q.back == nil && q.front == nil {
 		q.front = newNode
 		q.back = newNode
+		return
 	}
+
+	q.back.next = newNode
+	q.back = newNode
 }
 
 func (q *ListQueue[T]) Dequeue() T {
