@@ -5,15 +5,20 @@ import (
 	"strings"
 )
 
-type Queue[T any] struct {
+type Queue[T any] interface {
+	Enqueue(val T)
+	Dequeue() T
+}
+
+type ArrayQueue[T any] struct {
 	queue    []T
 	front    int
 	back     int
 	capacity int
 }
 
-func New[T any](capacity int) *Queue[T] {
-	return &Queue[T]{
+func NewArrayQueue[T any](capacity int) *ArrayQueue[T] {
+	return &ArrayQueue[T]{
 		queue:    make([]T, capacity),
 		front:    -1,
 		back:     -1,
@@ -21,7 +26,7 @@ func New[T any](capacity int) *Queue[T] {
 	}
 }
 
-func (q *Queue[T]) String() string {
+func (q *ArrayQueue[T]) String() string {
 	values := make([]string, q.capacity)
 	for i := 0; i < q.capacity; i++ {
 		values[i] = fmt.Sprintf("%v", q.queue[i])
@@ -30,7 +35,7 @@ func (q *Queue[T]) String() string {
 	return strings.Join(values, ",")
 }
 
-func (q *Queue[T]) Enqueue(val T) {
+func (q *ArrayQueue[T]) Enqueue(val T) {
 	if q.front < 0 {
 		q.front = q.getNextIndex(q.front)
 		q.back = q.getNextIndex(q.back)
@@ -47,7 +52,7 @@ func (q *Queue[T]) Enqueue(val T) {
 	q.queue[next] = val
 }
 
-func (q *Queue[T]) Dequeue() T {
+func (q *ArrayQueue[T]) Dequeue() T {
 	if q.front < 0 {
 		panic("Queue is empty!")
 	}
@@ -63,7 +68,7 @@ func (q *Queue[T]) Dequeue() T {
 	return val
 }
 
-func (q *Queue[T]) getNextIndex(i int) int {
+func (q *ArrayQueue[T]) getNextIndex(i int) int {
 	if i+1 > q.capacity-1 {
 		return 0
 	}

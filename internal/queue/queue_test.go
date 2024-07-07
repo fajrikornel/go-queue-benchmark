@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-func TestEnqueue(t *testing.T) {
+func TestArrayQueueEnqueue(t *testing.T) {
 	testCases := []struct {
 		name     string
 		testCase func(*testing.T)
 	}{
 		{
 			"test_enqueue_on_empty_queue", func(t *testing.T) {
-				queue := New[int](1)
+				queue := NewArrayQueue[int](1)
 
 				val := 123
 				queue.Enqueue(val)
@@ -36,7 +36,7 @@ func TestEnqueue(t *testing.T) {
 					}
 				}()
 
-				queue := New[int](1)
+				queue := NewArrayQueue[int](1)
 				queue.front = 0
 				queue.back = 0
 
@@ -46,7 +46,7 @@ func TestEnqueue(t *testing.T) {
 		},
 		{
 			"test_enqueue_on_non_empty_queue", func(t *testing.T) {
-				queue := New[int](2)
+				queue := NewArrayQueue[int](2)
 				queue.front = 0
 				queue.back = 0
 				queue.queue[0] = 321
@@ -67,7 +67,7 @@ func TestEnqueue(t *testing.T) {
 		},
 		{
 			"test_enqueue_on_edge_of_array", func(t *testing.T) {
-				queue := New[int](2)
+				queue := NewArrayQueue[int](2)
 				queue.front = 1
 				queue.back = 1
 				queue.queue[1] = 321
@@ -88,7 +88,7 @@ func TestEnqueue(t *testing.T) {
 		},
 		{
 			"test_enqueue_on_enqueuable_queue_when_back_is_at_edge_of_array", func(t *testing.T) {
-				queue := New[int](3)
+				queue := NewArrayQueue[int](3)
 				queue.front = 0
 				queue.back = 2
 				queue.queue[0] = 321
@@ -114,7 +114,7 @@ func TestEnqueue(t *testing.T) {
 		t.Run(tc.name, tc.testCase)
 	}
 }
-func TestDequeue(t *testing.T) {
+func TestArrayQueueDequeue(t *testing.T) {
 	testCases := []struct {
 		name     string
 		testCase func(*testing.T)
@@ -127,14 +127,14 @@ func TestDequeue(t *testing.T) {
 					}
 				}()
 
-				queue := New[int](1)
+				queue := NewArrayQueue[int](1)
 
 				queue.Dequeue()
 			},
 		},
 		{
 			"test_dequeue_when_queue_size_is_one", func(t *testing.T) {
-				queue := New[int](2)
+				queue := NewArrayQueue[int](2)
 				queue.front = 0
 				queue.back = 0
 				queue.queue[0] = 123
@@ -154,7 +154,7 @@ func TestDequeue(t *testing.T) {
 		},
 		{
 			"test_dequeue_when_queue_size_is_not_one", func(t *testing.T) {
-				queue := New[int](2)
+				queue := NewArrayQueue[int](2)
 				queue.front = 1
 				queue.back = 0
 				queue.queue[0] = 123
@@ -180,14 +180,14 @@ func TestDequeue(t *testing.T) {
 	}
 }
 
-func TestIntegration(t *testing.T) {
+func TestArrayQueueIntegration(t *testing.T) {
 	testCases := []struct {
 		name     string
 		testCase func(*testing.T)
 	}{
 		{
 			"test_queue_size_1", func(t *testing.T) {
-				queue := New[int](1)
+				queue := NewArrayQueue[int](1)
 
 				queue.Enqueue(123)
 				if !reflect.DeepEqual(queue.queue, []int{123}) {
@@ -232,7 +232,7 @@ func TestIntegration(t *testing.T) {
 		},
 		{
 			"test_queue_size_3", func(t *testing.T) {
-				queue := New[int](3)
+				queue := NewArrayQueue[int](3)
 
 				queue.Enqueue(123)
 				queue.Enqueue(456)

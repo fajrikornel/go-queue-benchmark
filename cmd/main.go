@@ -7,7 +7,8 @@ import (
 )
 
 func main() {
-	queue := q.New[int](5)
+	var queue q.Queue[int]
+	queue = q.NewArrayQueue[int](5)
 
 	fmt.Printf("%v\n", queue)
 }
