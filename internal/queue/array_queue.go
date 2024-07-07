@@ -22,9 +22,19 @@ func NewArrayQueue[T any](capacity int) *ArrayQueue[T] {
 }
 
 func (q *ArrayQueue[T]) String() string {
-	values := make([]string, q.capacity)
-	for i := 0; i < q.capacity; i++ {
-		values[i] = fmt.Sprintf("%v", q.queue[i])
+	values := []string{}
+
+	i := q.front
+	if i == -1 {
+		return ""
+	}
+
+	for true {
+		values = append(values, fmt.Sprintf("%v", q.queue[i]))
+		if i == q.back {
+			break
+		}
+		i = q.getNextIndex(i)
 	}
 
 	return strings.Join(values, ",")
