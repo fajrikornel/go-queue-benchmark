@@ -18,10 +18,10 @@ func TestEnqueue(t *testing.T) {
 				queue.Enqueue(val)
 
 				if queue.front != 0 {
-					t.Fatalf("Queue front not 1")
+					t.Fatalf("Queue front not 0")
 				}
 				if queue.back != 0 {
-					t.Fatalf("Queue back not 1")
+					t.Fatalf("Queue back not 0")
 				}
 				if queue.queue[0] != val {
 					t.Fatalf("Queue value not %d", val)
