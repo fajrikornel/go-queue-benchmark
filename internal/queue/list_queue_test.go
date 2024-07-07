@@ -41,7 +41,7 @@ func TestListQueueEnqueue(t *testing.T) {
 	}
 }
 
-func TestListQueueDnqueue(t *testing.T) {
+func TestListQueueDequeue(t *testing.T) {
 	testCases := []struct {
 		name     string
 		testCase func(*testing.T)
@@ -56,6 +56,21 @@ func TestListQueueDnqueue(t *testing.T) {
 					}
 				}()
 				queue.Dequeue()
+			},
+		},
+		{
+			"test_dequeue_on_nonempty_queue", func(t *testing.T) {
+				queue := newListQueueFromValues(123, 456, 789)
+
+				val := queue.Dequeue()
+				if val != 123 {
+					log.Fatalf("Expected value not 123!")
+				}
+
+				expectedQueue := newListQueueFromValues(456, 789)
+				if !isQueueEqual(expectedQueue, queue) {
+					log.Fatalf("Queue %v not equal to expected queue %v", queue, expectedQueue)
+				}
 			},
 		},
 	}
@@ -80,6 +95,7 @@ func newListQueueFromValues[T any](args ...T) *ListQueue[T] {
 		}
 
 		queue.back.next = listNode
+		queue.back = queue.back.next
 	}
 
 	return queue

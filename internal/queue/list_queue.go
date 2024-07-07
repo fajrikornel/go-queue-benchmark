@@ -55,5 +55,7 @@ func (q *ListQueue[T]) Dequeue() T {
 		panic("Queue is empty!")
 	}
 
-	return q.front.val
+	val := q.front.val
+	q.front = q.front.next
+	return val
 }
