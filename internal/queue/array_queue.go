@@ -34,16 +34,16 @@ func (q *ArrayQueue[T]) Enqueue(val T) {
 	if q.front < 0 {
 		q.front = q.getNextIndex(q.front)
 		q.back = q.getNextIndex(q.back)
-		q.queue[q.front] = val
+		q.queue[q.back] = val
 		return
 	}
 
-	next := q.getNextIndex(q.front)
-	if next == q.back {
+	next := q.getNextIndex(q.back)
+	if next == q.front {
 		panic("Queue is full!")
 	}
 
-	q.front = next
+	q.back = next
 	q.queue[next] = val
 }
 
@@ -52,12 +52,12 @@ func (q *ArrayQueue[T]) Dequeue() T {
 		panic("Queue is empty!")
 	}
 
-	val := q.queue[q.back]
-	if q.back == q.front {
-		q.front = -1
+	val := q.queue[q.front]
+	if q.front == q.back {
 		q.back = -1
+		q.front = -1
 	} else {
-		q.back = q.getNextIndex(q.back)
+		q.front = q.getNextIndex(q.front)
 	}
 
 	return val

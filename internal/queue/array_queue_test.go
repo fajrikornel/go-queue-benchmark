@@ -54,11 +54,11 @@ func TestArrayQueueEnqueue(t *testing.T) {
 				val := 123
 				queue.Enqueue(val)
 
-				if queue.front != 1 {
-					t.Fatalf("Queue front not 1")
+				if queue.front != 0 {
+					t.Fatalf("Queue front not 0")
 				}
-				if queue.back != 0 {
-					t.Fatalf("Queue back not 0")
+				if queue.back != 1 {
+					t.Fatalf("Queue back not 1")
 				}
 				if !reflect.DeepEqual(queue.queue, []int{321, 123}) {
 					t.Fatalf("Queue value not expected: %v", queue.queue)
@@ -75,11 +75,11 @@ func TestArrayQueueEnqueue(t *testing.T) {
 				val := 123
 				queue.Enqueue(val)
 
-				if queue.front != 0 {
-					t.Fatalf("Queue front not 0")
+				if queue.front != 1 {
+					t.Fatalf("Queue front not 1")
 				}
-				if queue.back != 1 {
-					t.Fatalf("Queue back not 1")
+				if queue.back != 0 {
+					t.Fatalf("Queue back not 0")
 				}
 				if !reflect.DeepEqual(queue.queue, []int{123, 321}) {
 					t.Fatalf("Queue value not expected: %v", queue.queue)
@@ -87,21 +87,21 @@ func TestArrayQueueEnqueue(t *testing.T) {
 			},
 		},
 		{
-			"test_enqueue_on_enqueuable_queue_when_back_is_at_edge_of_array", func(t *testing.T) {
+			"test_enqueue_on_enqueuable_queue_when_front_is_at_edge_of_array", func(t *testing.T) {
 				queue := NewArrayQueue[int](3)
-				queue.front = 0
-				queue.back = 2
+				queue.front = 2
+				queue.back = 0
 				queue.queue[0] = 321
 				queue.queue[2] = 321
 
 				val := 123
 				queue.Enqueue(val)
 
-				if queue.front != 1 {
-					t.Fatalf("Queue front not 1")
+				if queue.back != 1 {
+					t.Fatalf("Queue back not 1")
 				}
-				if queue.back != 2 {
-					t.Fatalf("Queue back not 2")
+				if queue.front != 2 {
+					t.Fatalf("Queue front not 2")
 				}
 				if !reflect.DeepEqual(queue.queue, []int{321, 123, 321}) {
 					t.Fatalf("Queue value not expected: %v", queue.queue)
@@ -155,8 +155,8 @@ func TestArrayQueueDequeue(t *testing.T) {
 		{
 			"test_dequeue_when_queue_size_is_not_one", func(t *testing.T) {
 				queue := NewArrayQueue[int](2)
-				queue.front = 1
-				queue.back = 0
+				queue.front = 0
+				queue.back = 1
 				queue.queue[0] = 123
 				queue.queue[1] = 321
 
