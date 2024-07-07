@@ -8,7 +8,10 @@ import (
 
 func main() {
 	var queue q.Queue[int]
-	queue = q.NewArrayQueue[int](5)
 
+	queue = q.NewArrayQueue[int](5)
+	fmt.Printf("%v\n", queue)
+
+	queue = q.NewListQueue[int]()
 	fmt.Printf("%v\n", queue)
 }
