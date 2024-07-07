@@ -80,6 +80,56 @@ func TestListQueueDequeue(t *testing.T) {
 	}
 }
 
+func TestListQueueIntegration(t *testing.T) {
+	testCases := []struct {
+		name     string
+		testCase func(*testing.T)
+	}{
+		{
+			"test_list_queue", func(t *testing.T) {
+				queue := NewListQueue[int]()
+
+				queue.Enqueue(123)
+				queue.Enqueue(456)
+				queue.Enqueue(789)
+				if !isQueueEqual(newListQueueFromValues(123, 456, 789), queue) {
+					t.Fatalf("Not expected!")
+				}
+
+				val := queue.Dequeue()
+				if val != 123 {
+					t.Fatalf("Not expected!")
+				}
+
+				queue.Enqueue(321)
+
+				val = queue.Dequeue()
+				if val != 456 {
+					t.Fatalf("Not expected!")
+				}
+
+				val = queue.Dequeue()
+				if val != 789 {
+					t.Fatalf("Not expected!")
+				}
+
+				val = queue.Dequeue()
+				if val != 321 {
+					t.Fatalf("Not expected!")
+				}
+
+				if !isQueueEqual(NewListQueue[int](), queue) {
+					t.Fatalf("Not expected!")
+				}
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, tc.testCase)
+	}
+}
+
 func newListQueueFromValues[T any](args ...T) *ListQueue[T] {
 	queue := NewListQueue[T]()
 	for i, arg := range args {
