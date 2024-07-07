@@ -31,3 +31,11 @@ func (q *ListQueue[T]) String() string {
 
 	return strings.Join(values, ",")
 }
+
+func (q *ListQueue[T]) Enqueue(val T) {
+
+}
+
+func (q *ListQueue[T]) Dequeue() T {
+	return q.front.val
+}
