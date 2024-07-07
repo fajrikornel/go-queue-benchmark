@@ -1,6 +1,9 @@
 package queue
 
-import "testing"
+import (
+	"log"
+	"testing"
+)
 
 func TestListQueueEnqueue(t *testing.T) {
 	testCases := []struct {
@@ -29,6 +32,30 @@ func TestListQueueEnqueue(t *testing.T) {
 				if !isQueueEqual(expectedQueue, queue) {
 					t.Fatalf("Queue %v not equal to expected %v", queue, expectedQueue)
 				}
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, tc.testCase)
+	}
+}
+
+func TestListQueueDnqueue(t *testing.T) {
+	testCases := []struct {
+		name     string
+		testCase func(*testing.T)
+	}{
+		{
+			"test_dequeue_on_empty_queue", func(t *testing.T) {
+				queue := NewListQueue[int]()
+
+				defer func() {
+					if r := recover(); r == nil {
+						log.Fatalf("Did not panic!!")
+					}
+				}()
+				queue.Dequeue()
 			},
 		},
 	}

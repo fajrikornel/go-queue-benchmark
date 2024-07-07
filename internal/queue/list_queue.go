@@ -51,5 +51,9 @@ func (q *ListQueue[T]) Enqueue(val T) {
 }
 
 func (q *ListQueue[T]) Dequeue() T {
+	if q.front == nil {
+		panic("Queue is empty!")
+	}
+
 	return q.front.val
 }
