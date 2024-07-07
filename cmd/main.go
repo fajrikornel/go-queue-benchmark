@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	dsa "example.com/go-dsa/internal"
+	q "example.com/go-dsa/internal/queue"
 )
 
 func main() {
-	queue := dsa.New[int](5)
+	queue := q.New[int](5)
 
 	fmt.Printf("%v\n", queue)
 }

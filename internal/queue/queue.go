@@ -1,4 +1,4 @@
-package dsa
+package queue
 
 import (
 	"fmt"
@@ -28,4 +28,21 @@ func (q *Queue[T]) String() string {
 	}
 
 	return strings.Join(values, ",")
+}
+
+func (q *Queue[T]) Enqueue(val T) {
+	if q.front < 0 {
+		q.front = q.getNextIndex(q.front)
+		q.back = q.getNextIndex(q.back)
+		q.queue[q.front] = val
+		return
+	}
+}
+
+func (q *Queue[T]) getNextIndex(i int) int {
+	if i+1 > q.capacity-1 {
+		return 0
+	}
+
+	return i + 1
 }
