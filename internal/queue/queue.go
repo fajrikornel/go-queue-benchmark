@@ -48,12 +48,18 @@ func (q *Queue[T]) Enqueue(val T) {
 }
 
 func (q *Queue[T]) Dequeue() T {
-	if q.front < 0 || q.back == q.getNextIndex(q.front) {
+	if q.front < 0 {
 		panic("Queue is empty!")
 	}
 
 	val := q.queue[q.back]
-	q.back = q.getNextIndex(q.back)
+	if q.back == q.front {
+		q.front = -1
+		q.back = -1
+	} else {
+		q.back = q.getNextIndex(q.back)
+	}
+
 	return val
 }
 
